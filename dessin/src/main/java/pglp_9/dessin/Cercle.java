@@ -15,8 +15,8 @@ public class Cercle extends Forme{
 		
 	}
 
-	public String affiche() {
-		  return "Cercle : " + nom + ", rayon " + rayon+ ", centre "+ centre.toString();
+	public void affiche() {
+		System.out.println("Cercle : " + nom + ", rayon " + rayon+ ", centre "+ centre.toString());
 		
 	}
 	

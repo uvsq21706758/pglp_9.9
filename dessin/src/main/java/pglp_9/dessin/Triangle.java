@@ -15,8 +15,8 @@ public class Triangle extends Forme{
 		this.point_3.deplace(x + point_3.getX(), y + point_3.getY());
 	}
 
-	public String affiche() {
-		  return "Triangle : " + nom + ", Point 1 " + point_1.toString()+ ", Point 2 "+ point_2.toString()+ ", Point 3 "+ point_3.toString();
+	public void affiche() {
+		System.out.println("Triangle : " + nom + ", Point 1 " + point_1.toString()+ ", Point 2 "+ point_2.toString()+ ", Point 3 "+ point_3.toString());
 			
 		
 	}

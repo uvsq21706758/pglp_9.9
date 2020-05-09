@@ -16,8 +16,8 @@ public class Rectangle extends Forme{
 	    
 	}
 
-	public String affiche() {
-		  return "Rectangle : " + nom + ", Point :" + point.toString()+", Longueur : "+longueur+", largeur :"+largeur;
+	public void affiche() {
+		System.out.println("Rectangle : " + nom + ", Point :" + point.toString()+", Longueur : "+longueur+", largeur :"+largeur);
 			
 		
 	}

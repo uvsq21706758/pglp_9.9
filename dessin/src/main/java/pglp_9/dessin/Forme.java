@@ -10,6 +10,6 @@ public abstract class Forme {
 	
 	public abstract void deplace(int x,int y);
 	
-	public abstract String affiche();
+	public abstract void affiche();
 
 }

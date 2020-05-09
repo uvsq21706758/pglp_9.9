@@ -16,8 +16,8 @@ public class Carre extends Forme{
 		
 	}
 
-	public String affiche() {
-		return "Carre : " + nom + ", Point : " + point.toString()+ ", cote :"+ cote;
+	public void affiche() {
+		System.out.println( "Carre : " + nom + ", Point : " + point.toString()+ ", cote :"+ cote);
 		
 	}
 
