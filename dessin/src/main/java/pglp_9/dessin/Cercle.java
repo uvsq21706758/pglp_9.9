@@ -5,9 +5,9 @@ public class Cercle extends Forme{
 	int rayon;
 	Point centre;
 	
-    public Cercle(String nom,int x,int y,int rayon){
+    public Cercle(String nom,Point p,int rayon){
     	super(nom);
-    	this.centre=new Point(x,y);
+    	this.centre=p.copie();
     	this.rayon=rayon;
     }
 	public void deplace(int x, int y) {

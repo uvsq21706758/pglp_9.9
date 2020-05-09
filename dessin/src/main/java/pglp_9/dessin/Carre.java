@@ -1,20 +1,23 @@
 package pglp_9.dessin;
 
 public class Carre extends Forme{
+	
+	Point point;
+	int cote;
 
-	public Carre(String nom) {
+	public Carre(String nom,Point p,int cote) {
 		super(nom);
-		// TODO Auto-generated constructor stub
+		point=p.copie();
+		this.cote=cote;
 	}
 
 	public void deplace(int x, int y) {
-		// TODO Auto-generated method stub
+		point.deplace(x, y);
 		
 	}
 
 	public String affiche() {
-		return null;
-		// TODO Auto-generated method stub
+		return "Carre : " + nom + ", Point : " + point.toString()+ ", cote :"+ cote;
 		
 	}
 
