@@ -1,9 +1,15 @@
 package pglp_9.dessin;
 
-public interface Forme {
+public abstract class Forme {
 	
-	public void deplace(int x,int y);
+	String nom;
 	
-	public String affiche();
+	public Forme(String nom) {
+		this.nom=nom;
+	}
+	
+	public abstract void deplace(int x,int y);
+	
+	public abstract String affiche();
 
 }

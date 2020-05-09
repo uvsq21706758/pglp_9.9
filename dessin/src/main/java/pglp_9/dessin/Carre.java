@@ -1,6 +1,11 @@
 package pglp_9.dessin;
 
-public class Carre implements Forme{
+public class Carre extends Forme{
+
+	public Carre(String nom) {
+		super(nom);
+		// TODO Auto-generated constructor stub
+	}
 
 	public void deplace(int x, int y) {
 		// TODO Auto-generated method stub
