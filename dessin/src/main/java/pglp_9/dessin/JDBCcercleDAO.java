@@ -1,5 +1,7 @@
 package pglp_9.dessin;
 
+import java.sql.SQLException;
+
 public class JDBCcercleDAO extends DAO<Cercle>{
 
 	@Override

@@ -1,6 +1,9 @@
 package pglp_9.dessin;
 
+import java.sql.SQLException;
+
 public class JDBCrectangleDAO extends DAO<Rectangle>{
+
 
 	@Override
 	public Rectangle create(Rectangle object) {
