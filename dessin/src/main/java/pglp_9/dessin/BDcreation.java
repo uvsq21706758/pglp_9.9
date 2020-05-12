@@ -43,7 +43,7 @@ public class BDcreation {
     	 DatabaseMetaData dbmd = getConnect().getMetaData();
          ResultSet rs = dbmd.getTables(null, null,"Cercle".toUpperCase(), null);
          String createforme="CREATE TABLE Cercle("
-				 + "Nomcr varchar(30) primary key,"
+				 + "Nomcrl varchar(30) primary key,"
 	                + "centre_x int,"
 	                + "centre_y int,"
 	                + "rayon int"
@@ -65,7 +65,7 @@ public class BDcreation {
 				 + "NomRc varchar(30) primary key,"
 	                + "point_x int,"
 	                + "point_y int,"
-	                + "largeurint,"
+	                + "largeur int,"
 	                + "longeur int"
 	              + ")";
           Statement stmt = getConnect().createStatement();
