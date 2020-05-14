@@ -4,7 +4,7 @@ public class Carre extends Forme{
 	
 	Point point;
 	public Point getPoint() {
-		return point;
+		return point.copie();
 	}
 
 	public void setPoint(Point point) {

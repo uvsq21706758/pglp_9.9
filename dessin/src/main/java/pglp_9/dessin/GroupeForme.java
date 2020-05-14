@@ -1,6 +1,7 @@
 package pglp_9.dessin;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class GroupeForme extends Forme{
 	
@@ -37,4 +38,8 @@ public class GroupeForme extends Forme{
 	public ArrayList<Forme> getList() {
         return this.formes;
     }
+	
+    public Iterator<Forme> iteratorGroupe() {
+	        return formes.iterator();
+	    }
 }

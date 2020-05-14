@@ -28,9 +28,12 @@ public class Triangle extends Forme{
     	point_3=p3.copie();
     }
 	public void deplace(int x, int y) {
-		this.point_1.deplace(x + point_1.getX(), y + point_1.getY());
-		this.point_2.deplace(x + point_2.getX(), y + point_2.getY());
-		this.point_3.deplace(x + point_3.getX(), y + point_3.getY());
+		this.point_1.setX(this.point_1.getX() + x);
+		this.point_1.setY(this.point_1.getY() + y);
+		this.point_2.setX(this.point_2.getX() + x);
+		this.point_2.setY(this.point_2.getY() + y);
+		this.point_3.setX(this.point_3.getX() + x);
+		this.point_3.setY(this.point_3.getY() + y);
 	}
 
 	public void affiche() {
