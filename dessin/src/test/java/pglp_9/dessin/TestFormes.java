@@ -8,9 +8,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.junit.Test;
-/**
- * Unit test for simple App.
- */
+
 public class TestFormes 
    
 {
