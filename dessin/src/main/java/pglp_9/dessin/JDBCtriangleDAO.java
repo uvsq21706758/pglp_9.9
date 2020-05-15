@@ -1,6 +1,7 @@
 package pglp_9.dessin;
 
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,9 +13,43 @@ public class JDBCtriangleDAO extends DAO<Triangle>{
     Connection con;
 	
 	public JDBCtriangleDAO() {
-		 this.con = BDcreation.getConnect();
+		 this.con = FormeandRelation.getConnect();
     }
-
+	 public void createtableTriangle() throws SQLException {
+    	 DatabaseMetaData dbmd = con.getMetaData();
+         ResultSet rs = dbmd.getTables(null, null,"Triangle".toUpperCase(), null);
+         String createforme="CREATE TABLE Triangle("
+		           + "NomTr varchar(30) primary key,"
+	                + "point1_x int,"
+	                + "point1_y int,"
+	                + "point2_x int,"
+	                + "point2_y int,"
+	                + "point3_x int,"
+	                + "point3_y int,"
+	                + "foreign key (NomTr) references Forme (Nomf)"
+	           	+ ")";
+          Statement stmt = con.createStatement();
+             if (!rs.next()) {
+             	stmt.execute(createforme);
+             	System.out.println("Table Triangle crée");
+ 	            rs.close();
+ 	            stmt.close();
+             }	
+	}
+	 
+	 public void droptableTriangle() {
+		 Statement statement = null;
+    	 try {
+    		 statement = con.createStatement();
+         } catch (SQLException e) {
+             e.printStackTrace();
+         }
+         try {
+        	 statement.execute("drop table Triangle");
+         } catch (SQLException e) {
+         }
+	 }
+	 
 	@Override
 	public Triangle create(Triangle object) throws SQLException {
 		PreparedStatement prepare = con.prepareStatement(

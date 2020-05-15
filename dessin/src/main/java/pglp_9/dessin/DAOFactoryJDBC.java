@@ -4,7 +4,7 @@ package pglp_9.dessin;
 public class DAOFactoryJDBC {
 	
     public DAOFactoryJDBC() {
-        BDcreation.getConnect();
+        FormeandRelation.getConnect();
     }
     
 	public  DAO<Cercle> getCercleDAO () {

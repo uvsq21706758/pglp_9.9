@@ -1,6 +1,7 @@
 package pglp_9.dessin;
 
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,9 +13,41 @@ public class JDBCcarreDAO extends DAO<Carre>{
 	Connection con;
 	
 	public JDBCcarreDAO() {
-		 this.con = BDcreation.getConnect();
+		 this.con = FormeandRelation.getConnect();
     }
-
+	
+	 public void createtableCarre() throws SQLException {
+    	 DatabaseMetaData dbmd = con.getMetaData();
+         ResultSet rs = dbmd.getTables(null, null,"Carre".toUpperCase(), null);
+         String createforme="CREATE TABLE Carre("
+		           + "NomCr varchar(30) primary key,"
+	                + "point_x int,"
+	                + "point_y int,"
+	                + "cote int,"
+	                + "foreign key (NomCr) references Forme (Nomf)"
+		+ ")";
+          Statement stmt = con.createStatement();
+             if (!rs.next()) {
+             	stmt.execute(createforme);
+             	System.out.println("Table Carre crée");
+ 	            rs.close();
+ 	            stmt.close();
+             }	
+	}
+	 
+	 public void droptableCarre() {
+		 Statement statement = null;
+    	 try {
+    		 statement = con.createStatement();
+         } catch (SQLException e) {
+             e.printStackTrace();
+         }
+         try {
+        	 statement.execute("drop table Carre");
+         } catch (SQLException e) {
+         }
+	 }
+	 
 	@Override
 	public Carre create(Carre object) throws SQLException {
 		PreparedStatement prepare = con.prepareStatement(

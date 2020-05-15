@@ -1,6 +1,7 @@
 package pglp_9.dessin;
 
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,8 +13,38 @@ public class JDBCgroupeDAO extends DAO<GroupeForme>{
 	Connection con;
 	
 	public JDBCgroupeDAO() {
-		 this.con = BDcreation.getConnect();
+		 this.con = FormeandRelation.getConnect();
     }
+	
+	 public void createtableGroupe() throws SQLException {
+    	 DatabaseMetaData dbmd = con.getMetaData();
+         ResultSet rs = dbmd.getTables(null, null,"Groupeforme".toUpperCase(), null);
+         String createforme="CREATE TABLE Groupeforme ("
+					+ "nomgr VARCHAR(30) PRIMARY KEY,"
+					+ "foreign key (nomgr) references Forme (Nomf)"
+					+ ")";
+          Statement stmt = con.createStatement();
+             if (!rs.next()) {
+             	stmt.execute(createforme);
+             	System.out.println("Table Groupeforme crée");
+ 	            rs.close();
+ 	            stmt.close();
+             }	
+    }
+	 
+	 public void droptableGroupe() {
+		 Statement statement = null;
+    	 try {
+    		 statement = con.createStatement();
+         } catch (SQLException e) {
+             e.printStackTrace();
+         }
+         try {
+        	 statement.execute("drop table Groupeforme");
+         } catch (SQLException e) {
+         }
+	 }
+	 
 	@Override
 	public GroupeForme create(GroupeForme object) throws SQLException {
 		DAOFactoryJDBC factory = new DAOFactoryJDBC();
@@ -28,17 +59,17 @@ public class JDBCgroupeDAO extends DAO<GroupeForme>{
 	            prepare.executeUpdate();
 	            for (Forme forme : object.getList()) {
 	                if (forme.getClass() == Cercle.class) {
-	                    DAO<Cercle> dao = factory.getCercleDAO();
-	                    dao.create((Cercle) forme);
+	                    DAO<Cercle> cercle = factory.getCercleDAO();
+	                    cercle.create((Cercle) forme);
 	                } else if (forme.getClass() == Carre.class) {
-	                    DAO<Carre> dao = factory.getCarreDAO();
-	                    dao.create((Carre) forme);
+	                    DAO<Carre> carre = factory.getCarreDAO();
+	                    carre.create((Carre) forme);
 	                } else if (forme.getClass() == Rectangle.class) {
-	                    DAO<Rectangle> dao = factory.getRectangleDAO();
-	                    dao.create((Rectangle) forme);
+	                    DAO<Rectangle> rectangle = factory.getRectangleDAO();
+	                    rectangle.create((Rectangle) forme);
 	                } else if (forme.getClass() == Triangle.class) {
-	                    DAO<Triangle> dao = factory.getTriangleDAO();
-	                    dao.create((Triangle) forme);
+	                    DAO<Triangle> triangle = factory.getTriangleDAO();
+	                    triangle.create((Triangle) forme);
 	                } else {
 	                    this.create((GroupeForme) forme);
 	                }
@@ -59,8 +90,8 @@ public class JDBCgroupeDAO extends DAO<GroupeForme>{
             PreparedStatement prepare = con.prepareStatement(
                     "SELECT * FROM Groupeforme WHERE nomgr = ?");
             prepare.setString(1, id);
-            ResultSet result = prepare.executeQuery();
-            if (result.next()) {
+            ResultSet rs = prepare.executeQuery();
+            if (rs.next()) {
             	formegr = new GroupeForme(id);
                 ArrayList<Forme> list = findRelation(id);
                 for (Forme forme : list) {
@@ -82,17 +113,17 @@ public class JDBCgroupeDAO extends DAO<GroupeForme>{
 	            DAOFactoryJDBC factory = new DAOFactoryJDBC();
 	            for (Forme forme : object.getList()) {
 	                if (forme.getClass() == Cercle.class) {
-	                    DAO<Cercle> dao = factory.getCercleDAO();
-	                    dao.create((Cercle) forme);
+	                    DAO<Cercle> cercle = factory.getCercleDAO();
+	                    cercle.update((Cercle) forme);
 	                } else if (forme.getClass() == Carre.class) {
-	                    DAO<Carre> dao = factory.getCarreDAO();
-	                    dao.create((Carre) forme);
+	                    DAO<Carre> carre = factory.getCarreDAO();
+	                    carre.update((Carre) forme);
 	                } else if (forme.getClass() == Rectangle.class) {
-	                    DAO<Rectangle> dao = factory.getRectangleDAO();
-	                    dao.create((Rectangle) forme);
+	                    DAO<Rectangle> rectangle = factory.getRectangleDAO();
+	                    rectangle.update((Rectangle) forme);
 	                } else if (forme.getClass() == Triangle.class) {
-	                    DAO<Triangle> dao = factory.getTriangleDAO();
-	                    dao.create((Triangle) forme);
+	                    DAO<Triangle> triangle = factory.getTriangleDAO();
+	                    triangle.update((Triangle) forme);
 	                } else {
 	                    this.create((GroupeForme) forme);
 	                }

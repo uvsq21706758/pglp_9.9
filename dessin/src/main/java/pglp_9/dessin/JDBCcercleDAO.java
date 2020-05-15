@@ -12,8 +12,41 @@ public class JDBCcercleDAO extends DAO<Cercle>{
 	Connection con;
 	
 	public JDBCcercleDAO() {
-       this.con = BDcreation.getConnect();
+       this.con = FormeandRelation.getConnect();
     }
+	
+	  public void createtableCercle() throws SQLException {
+	    	 DatabaseMetaData dbmd = con.getMetaData();
+	         ResultSet rs = dbmd.getTables(null, null,"Cercle".toUpperCase(), null);
+	         String createforme="CREATE TABLE Cercle("
+					 + "Nomcrl varchar(30) primary key,"
+		                + "centre_x int,"
+		                + "centre_y int,"
+		                + "rayon int,"
+		                + "foreign key (Nomcrl) references Forme (Nomf)"
+		           + ")";
+	          Statement stmt =con.createStatement();
+	             if (!rs.next()) {
+	             	stmt.execute(createforme);
+	             	System.out.println("Table Cercle crée");
+	 	            rs.close();
+	 	            stmt.close();
+	             }	
+			
+		}
+	  
+	  public void droptableCercle() {
+		  Statement statement = null;
+	    	 try {
+	    		 statement = con.createStatement();
+	         } catch (SQLException e) {
+	             e.printStackTrace();
+	         }
+		  try {
+	        	 statement.execute("drop table Cercle");
+	         } catch (SQLException e) {
+	         }
+	  }
 
 	@Override
 	public Cercle create(Cercle object) throws SQLException {

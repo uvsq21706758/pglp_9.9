@@ -1,6 +1,7 @@
 package pglp_9.dessin;
 
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,9 +13,42 @@ public class JDBCrectangleDAO extends DAO<Rectangle>{
 	Connection con;
 	
 	public JDBCrectangleDAO() {
-		 this.con = BDcreation.getConnect();
+		 this.con = FormeandRelation.getConnect();
     }
 
+	 public void createtableRectangle() throws SQLException {
+    	 DatabaseMetaData dbmd = con.getMetaData();
+         ResultSet rs = dbmd.getTables(null, null,"Rectangle".toUpperCase(), null);
+         String createforme="CREATE TABLE Rectangle("
+				 + "NomRc varchar(30) primary key,"
+	                + "point_x int,"
+	                + "point_y int,"
+	                + "largeur int,"
+	                + "longeur int,"
+	                + "foreign key (NomRc) references Forme (Nomf)"
+	              + ")";
+          Statement stmt = con.createStatement();
+             if (!rs.next()) {
+             	stmt.execute(createforme);
+             	System.out.println("Table Rectangle crée");
+ 	            rs.close();
+ 	            stmt.close();
+             }	
+	}
+	 
+	 public void droptableRectangle() {
+		 Statement statement = null;
+    	 try {
+    		 statement = con.createStatement();
+         } catch (SQLException e) {
+             e.printStackTrace();
+         }
+         try {
+        	 statement.execute("drop table Rectangle");
+         } catch (SQLException e) {
+         }
+	 }
+	 
 	@Override
 	public Rectangle create(Rectangle object) throws SQLException {
 		PreparedStatement prepare = con.prepareStatement(
