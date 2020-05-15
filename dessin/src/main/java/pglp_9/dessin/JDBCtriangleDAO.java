@@ -18,6 +18,11 @@ public class JDBCtriangleDAO extends DAO<Triangle>{
 	@Override
 	public Triangle create(Triangle object) throws SQLException {
 		PreparedStatement prepare = con.prepareStatement(
+                "INSERT INTO Forme (Nomf)"
+                + " VALUES(?)");
+                prepare.setString(1, object.getNom());
+                prepare.executeUpdate(); 
+		prepare = con.prepareStatement(
 				"INSERT  INTO Triangle (NomTr, point1_x, point1_y, point2_x, point2_y,point3_x, point3_y)" +
 				"VALUES (?, ?, ?, ?, ?, ?, ?)");
 		prepare.setString(1, object.getNom());
@@ -88,7 +93,9 @@ public class JDBCtriangleDAO extends DAO<Triangle>{
 		Statement stmt = con.createStatement();
         ResultSet rs = stmt.executeQuery("select * from Triangle where NomTr=" + object.getNom());
             if(rs.next()) {
+              stmt.executeUpdate("delete from Relation where nomForme ="+ object.getNom());
               stmt.executeUpdate("delete from Triangle where NomTr="+ object.getNom());
+              stmt.executeUpdate("delete from Forme where Nomf="+ object.getNom()); 
             	rs.close();
             stmt.close();
            	  System.out.printf("Ligne supprimée \n");

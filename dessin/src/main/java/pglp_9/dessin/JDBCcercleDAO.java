@@ -17,6 +17,11 @@ public class JDBCcercleDAO extends DAO<Cercle>{
 	@Override
 	public Cercle create(Cercle object) throws SQLException {
 		PreparedStatement prepare = con.prepareStatement(
+                "INSERT INTO Forme (Nomf)"
+                + " VALUES(?)");
+                prepare.setString(1, object.getNom());
+                prepare.executeUpdate();
+		prepare = con.prepareStatement(
 				"INSERT  INTO Cercle (Nomcrl, centre_x, centre_y, rayon)" +
 				"VALUES (?, ?, ?, ?)");
 		prepare.setString(1, object.getNom());
@@ -77,9 +82,9 @@ public class JDBCcercleDAO extends DAO<Cercle>{
 		Statement stmt = con.createStatement();
         ResultSet rs = stmt.executeQuery("select * from Cercle where Nomcrl=" + object.getNom());
             if(rs.next()) {
-            	 stmt.executeUpdate("delete from Relation where nomForme ="+ object.getNom());
+              stmt.executeUpdate("delete from Relation where nomForme ="+ object.getNom());
               stmt.executeUpdate("delete from Cercle where Nomcrl="+ object.getNom());
-              
+              stmt.executeUpdate("delete from Forme where Nomf="+ object.getNom()); 
             	rs.close();
             stmt.close();
            	  System.out.printf("Ligne supprimée \n");

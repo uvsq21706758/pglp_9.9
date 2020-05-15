@@ -5,30 +5,30 @@ import java.sql.Connection;
 
 public class DAOFactoryJDBC {
 	
-    private static Connection con;
+    private  Connection con;
     
     public DAOFactoryJDBC() {
         con = BDcreation.getConnect();
     }
     
-	public static DAO<Cercle> getCercleDAO () {
+	public  DAO<Cercle> getCercleDAO () {
 		return new JDBCcercleDAO(con) ;
 		}
 	
-	public static DAO<Rectangle> getRectangleDAO () {
+	public  DAO<Rectangle> getRectangleDAO () {
 		return new JDBCrectangleDAO (con) ;
 		}
 	
-	public static DAO<Triangle> getTriangleDAO () {
+	public  DAO<Triangle> getTriangleDAO () {
 		return new JDBCtriangleDAO(con) ;
 		}
 	
-	public static DAO<Carre> getCarreDAO () {
+	public  DAO<Carre> getCarreDAO () {
 		return new JDBCcarreDAO(con);
 		}
 	
-	public static DAO<GroupeForme> getGroupeDAO () {
-		return new JDBCgroupeDAO();
+	public  DAO<GroupeForme> getGroupeDAO () {
+		return new JDBCgroupeDAO(con);
 		}   
 	    
 }

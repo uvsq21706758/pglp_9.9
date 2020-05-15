@@ -12,13 +12,13 @@ public class BDcreation {
 	String driver ="org.apache.derby.jdbc.EmbeddedDriver";
 	String dburl = "jdbc:derby:data;create=true";
 	
-	static Connection con;
+	 static Connection con;
 	
 	public BDcreation() throws SQLException {
 		  con=DriverManager.getConnection(dburl);
 	}
 	
-	public static Connection getConnect() {
+	public static  Connection getConnect() {
         return con;
     }
 	

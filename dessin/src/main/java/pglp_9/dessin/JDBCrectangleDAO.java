@@ -18,6 +18,11 @@ public class JDBCrectangleDAO extends DAO<Rectangle>{
 	@Override
 	public Rectangle create(Rectangle object) throws SQLException {
 		PreparedStatement prepare = con.prepareStatement(
+                "INSERT INTO Forme (Nomf)"
+                + " VALUES(?)");
+                prepare.setString(1, object.getNom());
+                prepare.executeUpdate();
+		prepare = con.prepareStatement(
 				"INSERT  INTO Rectangle (NomRc, point_x, point_y, largeur, longeur)" +
 				"VALUES (?, ?, ?, ?, ?)");
 		prepare.setString(1, object.getNom());
@@ -81,6 +86,7 @@ public class JDBCrectangleDAO extends DAO<Rectangle>{
             if(rs.next()) {
            	 stmt.executeUpdate("delete from Relation where nomForme ="+ object.getNom());
               stmt.executeUpdate("delete from Rectangle where NomRc="+ object.getNom());
+              stmt.executeUpdate("delete from Forme where Nomf="+ object.getNom()); 
             	rs.close();
             stmt.close();
            	  System.out.printf("Ligne supprimée \n");

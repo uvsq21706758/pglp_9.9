@@ -18,6 +18,11 @@ public class JDBCcarreDAO extends DAO<Carre>{
 	@Override
 	public Carre create(Carre object) throws SQLException {
 		PreparedStatement prepare = con.prepareStatement(
+                "INSERT INTO Forme (Nomf)"
+                + " VALUES(?)");
+                prepare.setString(1, object.getNom());
+                prepare.executeUpdate();
+		prepare = con.prepareStatement(
 				"INSERT  INTO Carre (NomCr, point_x, point_y, cote)" +
 				"VALUES (?, ?, ?, ?)");
 		prepare.setString(1, object.getNom());
@@ -78,8 +83,9 @@ public class JDBCcarreDAO extends DAO<Carre>{
 		Statement stmt = con.createStatement();
         ResultSet rs = stmt.executeQuery("select * from Carre where NomCr=" + object.getNom());
             if(rs.next()) {
+              stmt.executeUpdate("delete from Relation where nomForme ="+ object.getNom());
               stmt.executeUpdate("delete from Carre where NomCr="+ object.getNom());
-              
+              stmt.executeUpdate("delete from Forme where Nomf="+ object.getNom());
             	rs.close();
             stmt.close();
            	  System.out.printf("Ligne supprimée \n");
