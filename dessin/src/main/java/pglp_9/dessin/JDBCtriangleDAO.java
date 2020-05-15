@@ -34,14 +34,53 @@ public class JDBCtriangleDAO extends DAO<Triangle>{
 
 	@Override
 	public Triangle find(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		Triangle triangle= null;
+        try {
+            PreparedStatement prepare = con.prepareStatement(
+                    "SELECT * FROM Triangle WHERE NomTr =" + id);
+            ResultSet result = prepare.executeQuery();
+            if (result.next()) {
+                Point p1 = new Point(
+                        result.getInt("point1_x"),
+                        result.getInt("point1_y"));
+                Point p2 = new Point(
+                        result.getInt("point2_x"),
+                        result.getInt("point2_y"));
+                Point p3 = new Point(
+                        result.getInt("point3_x"),
+                        result.getInt("point3_y"));
+                try {
+                	triangle = new Triangle(id,p1,p2,p3);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return triangle;
 	}
 
 	@Override
 	public Triangle update(Triangle object) {
-		// TODO Auto-generated method stub
-		return null;
+		Triangle triangle = this.find(object.getNom());
+	        if (triangle != null) {
+	            try {
+	                PreparedStatement prepare = con.prepareStatement(
+	                "UPDATE Triangle SET point1_x ="+object.getPoint_1().getX()+", point1_y = "+object.getPoint_1().getY()+", "
+	                + "point2_x = "+object.getPoint_2().getX()+", point2_y ="+object.getPoint_2().getY()+", point3_x ="+object.getPoint_3().getX()+","
+	                +"point3_y = "+object.getPoint_3().getY()+ " WHERE NomTr = "+object.getNom());
+	                prepare.executeUpdate();
+	            } catch (SQLException e) {
+	                e.printStackTrace();
+	                return triangle;
+	            }
+	        } else {
+	            return null;
+	        }
+	        return object;
 	}
 
 	@Override
@@ -61,8 +100,19 @@ public class JDBCtriangleDAO extends DAO<Triangle>{
 
 	@Override
 	public ArrayList<Triangle> show() {
-		// TODO Auto-generated method stub
-		return null;
+		 ArrayList<Triangle> triangle = new ArrayList<Triangle>();
+	        try {
+	            PreparedStatement prepare = con.prepareStatement(
+	                    "SELECT NomTr FROM Triangle");
+	            ResultSet result = prepare.executeQuery();
+	            while (result.next()) {
+	            	triangle.add(this.find(result.getString("NomTr")));
+	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	            return new ArrayList<Triangle>();
+	        }
+	        return triangle;
 	}
 
 }
