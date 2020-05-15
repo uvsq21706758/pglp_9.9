@@ -1,6 +1,7 @@
 package pglp_9.dessin;
 
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,18 +11,19 @@ import java.util.ArrayList;
 public class JDBCcercleDAO extends DAO<Cercle>{
 	Connection con;
 	
-	public JDBCcercleDAO(Connection con) {
-       this.con = con;
+	public JDBCcercleDAO() {
+       this.con = BDcreation.getConnect();
     }
 
 	@Override
 	public Cercle create(Cercle object) throws SQLException {
+		
 		PreparedStatement prepare = con.prepareStatement(
                 "INSERT INTO Forme (Nomf)"
                 + " VALUES(?)");
                 prepare.setString(1, object.getNom());
                 prepare.executeUpdate();
-		prepare = con.prepareStatement(
+		prepare =con.prepareStatement(
 				"INSERT  INTO Cercle (Nomcrl, centre_x, centre_y, rayon)" +
 				"VALUES (?, ?, ?, ?)");
 		prepare.setString(1, object.getNom());
@@ -29,7 +31,6 @@ public class JDBCcercleDAO extends DAO<Cercle>{
 		prepare.setInt(3, object.getCentre().getY());
 		prepare.setInt(4, object.getRayon());
 		prepare.executeUpdate();
-		
 		return object;	
 	}
 
@@ -38,7 +39,8 @@ public class JDBCcercleDAO extends DAO<Cercle>{
 		Cercle cercle= null;
 	        try {
 	            PreparedStatement prepare = con.prepareStatement(
-	                    "SELECT * FROM Cercle WHERE Nomcrl =" + id);
+	                    "SELECT * FROM Cercle WHERE Nomcrl = ? ");
+	            prepare.setString(1, id);
 	            ResultSet result = prepare.executeQuery();
 	            if (result.next()) {
 	                Point centre = new Point(
@@ -64,8 +66,12 @@ public class JDBCcercleDAO extends DAO<Cercle>{
         if (cercle != null) {
             try {
                 PreparedStatement prepare = con.prepareStatement(
-                "UPDATE Cercle SET centre_x = "+object.getCentre().getX()+", centre_y ="+object.getCentre().getY()+", "
-                + "rayon = "+object.getRayon()+" WHERE Nomcrl = "+object.getNom());
+                "UPDATE Cercle SET centre_x = ?, centre_y =? , "
+                + "rayon = ? WHERE Nomcrl = ?");
+                prepare.setInt(1, object.getCentre().getX());
+        		prepare.setInt(2, object.getCentre().getY());
+        		prepare.setInt(3, object.getRayon());
+        		prepare.setString(4, object.getNom());
                 prepare.executeUpdate();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -79,20 +85,21 @@ public class JDBCcercleDAO extends DAO<Cercle>{
 
 	@Override
 	public void delete(Cercle object) throws SQLException {
-		Statement stmt = con.createStatement();
-        ResultSet rs = stmt.executeQuery("select * from Cercle where Nomcrl=" + object.getNom());
-            if(rs.next()) {
-              stmt.executeUpdate("delete from Relation where nomForme ="+ object.getNom());
-              stmt.executeUpdate("delete from Cercle where Nomcrl="+ object.getNom());
-              stmt.executeUpdate("delete from Forme where Nomf="+ object.getNom()); 
-            	rs.close();
-            stmt.close();
-           	  System.out.printf("Ligne supprimée \n");
-           
-            }else {
-            	System.out.println("suppression impossible,identifiant introuvable!");
+            try {
+            	PreparedStatement prepare = con.prepareStatement(
+                        "delete from Relation where nomForme = ?");
+                prepare.setString(1, object.getNom());
+                prepare = con.prepareStatement(
+                        "delete from Cercle where Nomcrl = ?");
+                prepare.setString(1, object.getNom());
+                prepare.executeUpdate();
+                prepare = con.prepareStatement(
+                        "delete from Forme where Nomf = ?");
+                prepare.setString(1, object.getNom());
+                prepare.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
-		
 	}
 
 	@Override

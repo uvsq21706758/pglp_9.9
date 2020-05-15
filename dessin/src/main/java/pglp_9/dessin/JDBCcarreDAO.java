@@ -11,8 +11,8 @@ public class JDBCcarreDAO extends DAO<Carre>{
     
 	Connection con;
 	
-	public JDBCcarreDAO(Connection con) {
-       this.con = con;
+	public JDBCcarreDAO() {
+		 this.con = BDcreation.getConnect();
     }
 
 	@Override
@@ -30,7 +30,6 @@ public class JDBCcarreDAO extends DAO<Carre>{
 		prepare.setInt(3, object.getPoint().getY());
 		prepare.setInt(4, object.getCote());
 		prepare.executeUpdate();
-		
 		return object;	
 	}
 
@@ -39,10 +38,11 @@ public class JDBCcarreDAO extends DAO<Carre>{
 		Carre carre= null;
         try {
             PreparedStatement prepare = con.prepareStatement(
-                    "SELECT * FROM Carre WHERE NomCr =" + id);
+                    "SELECT * FROM Carre WHERE NomCr =?" );
+            prepare.setString(1, id);
             ResultSet result = prepare.executeQuery();
             if (result.next()) {
-                Point point = new Point(
+            	 Point point = new Point(
                         result.getInt("point_x"),
                         result.getInt("point_y"));
                 try {
@@ -65,8 +65,12 @@ public class JDBCcarreDAO extends DAO<Carre>{
 	        if (cercle != null) {
 	            try {
 	                PreparedStatement prepare = con.prepareStatement(
-	                "UPDATE Carre SET point_x = "+object.getPoint().getX()+", point_y ="+object.getPoint().getY()+", "
-	                + "cote = "+object.getCote()+" WHERE NomCr = "+object.getNom());
+	                "UPDATE Carre SET point_x = ?, point_y =?, "
+	                + "cote =? WHERE NomCr = ? ");
+	                prepare.setInt(1, object.getPoint().getX());
+	        		prepare.setInt(2, object.getPoint().getY());
+	        		prepare.setInt(3, object.getCote());
+	        		prepare.setString(4, object.getNom());
 	                prepare.executeUpdate();
 	            } catch (SQLException e) {
 	                e.printStackTrace();
@@ -80,18 +84,20 @@ public class JDBCcarreDAO extends DAO<Carre>{
 
 	@Override
 	public void delete(Carre object) throws SQLException {
-		Statement stmt = con.createStatement();
-        ResultSet rs = stmt.executeQuery("select * from Carre where NomCr=" + object.getNom());
-            if(rs.next()) {
-              stmt.executeUpdate("delete from Relation where nomForme ="+ object.getNom());
-              stmt.executeUpdate("delete from Carre where NomCr="+ object.getNom());
-              stmt.executeUpdate("delete from Forme where Nomf="+ object.getNom());
-            	rs.close();
-            stmt.close();
-           	  System.out.printf("Ligne supprimée \n");
-           
-            }else {
-            	System.out.println("suppression impossible,identifiant introuvable!");
+            try {
+            	PreparedStatement prepare = con.prepareStatement(
+                        "delete from Relation where nomForme = ?");
+                prepare.setString(1, object.getNom());
+                prepare = con.prepareStatement(
+                        "delete from Carre where NomCr = ?");
+                prepare.setString(1, object.getNom());
+                prepare.executeUpdate();
+                prepare = con.prepareStatement(
+                        "delete from Forme where Nomf = ?");
+                prepare.setString(1, object.getNom());
+                prepare.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
 	}
 

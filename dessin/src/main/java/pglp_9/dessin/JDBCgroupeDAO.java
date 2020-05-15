@@ -11,8 +11,8 @@ public class JDBCgroupeDAO extends DAO<GroupeForme>{
      
 	Connection con;
 	
-	public JDBCgroupeDAO(Connection con) {
-       this.con = con;
+	public JDBCgroupeDAO() {
+		 this.con = BDcreation.getConnect();
     }
 	@Override
 	public GroupeForme create(GroupeForme object) throws SQLException {
@@ -107,19 +107,21 @@ public class JDBCgroupeDAO extends DAO<GroupeForme>{
 
 	@Override
 	public void delete(GroupeForme object) throws SQLException {
-		Statement stmt = con.createStatement();
-        ResultSet rs = stmt.executeQuery("select * from Triangle where NomTr=" + object.getNom());
-            if(rs.next()) {
-              deleteRelation(object.getNom());
-              stmt.executeUpdate("delete from Relation where nomForme ="+ object.getNom());
-              stmt.executeUpdate("delete from Groupeforme where nomgr="+ object.getNom());
-              stmt.executeUpdate("delete from Forme where Nomf="+ object.getNom()); 
-            	rs.close();
-            stmt.close();
-           	  System.out.printf("Ligne supprimée \n");
-           
-            }else {
-            	System.out.println("suppression impossible,identifiant introuvable!");
+            try {
+            	deleteRelation(object.getNom());
+            	PreparedStatement prepare = con.prepareStatement(
+                        "delete from Relation where nomForme = ?");
+                prepare.setString(1, object.getNom());
+                prepare = con.prepareStatement(
+                        "delete from Groupeforme where nomgr= ?");
+                prepare.setString(1, object.getNom());
+                prepare.executeUpdate();
+                prepare = con.prepareStatement(
+                        "delete from Forme where Nomf = ?");
+                prepare.setString(1, object.getNom());
+                prepare.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
 	}
 

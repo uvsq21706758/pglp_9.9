@@ -11,8 +11,8 @@ public class JDBCrectangleDAO extends DAO<Rectangle>{
 
 	Connection con;
 	
-	public JDBCrectangleDAO(Connection con) {
-       this.con = con;
+	public JDBCrectangleDAO() {
+		 this.con = BDcreation.getConnect();
     }
 
 	@Override
@@ -40,7 +40,8 @@ public class JDBCrectangleDAO extends DAO<Rectangle>{
 		Rectangle rectangle= null;
         try {
             PreparedStatement prepare = con.prepareStatement(
-                    "SELECT * FROM Rectangle WHERE NomRc =" + id);
+                    "SELECT * FROM Rectangle WHERE NomRc = ?");
+            prepare.setString(1, id);
             ResultSet result = prepare.executeQuery();
             if (result.next()) {
                 Point point = new Point(
@@ -66,8 +67,14 @@ public class JDBCrectangleDAO extends DAO<Rectangle>{
 	        if (rectangle != null) {
 	            try {
 	                PreparedStatement prepare = con.prepareStatement(
-	                "UPDATE Rectangle SET point_x = "+object.getPoint().getX()+", point_y = "+object.getPoint().getY()+", "
-	                + "largeur = "+object.getLargeur()+", longeur = "+object.getLongueur()+" WHERE NomRc = "+object.getNom());
+	                "UPDATE Rectangle SET point_x = ?, point_y = ?, "
+	                + "largeur = ?, longeur = ? WHERE NomRc = ?");
+	               
+	        		prepare.setInt(1, object.getPoint().getX());
+	        		prepare.setInt(2, object.getPoint().getY());
+	        		prepare.setInt(3, object.getLargeur());
+	        		prepare.setInt(4, object.getLongueur());
+	        		prepare.setString(5, object.getNom());
 	                prepare.executeUpdate();
 	            } catch (SQLException e) {
 	                e.printStackTrace();
@@ -81,19 +88,22 @@ public class JDBCrectangleDAO extends DAO<Rectangle>{
 
 	@Override
 	public void delete(Rectangle object) throws SQLException {
-		Statement stmt = con.createStatement();
-        ResultSet rs = stmt.executeQuery("select * from Rectangle where NomRc=" + object.getNom());
-            if(rs.next()) {
-           	 stmt.executeUpdate("delete from Relation where nomForme ="+ object.getNom());
-              stmt.executeUpdate("delete from Rectangle where NomRc="+ object.getNom());
-              stmt.executeUpdate("delete from Forme where Nomf="+ object.getNom()); 
-            	rs.close();
-            stmt.close();
-           	  System.out.printf("Ligne supprimée \n");
-           
-            } else {
-            	System.out.println("suppression impossible,identifiant introuvable!");
-            }
+		  try {
+          	PreparedStatement prepare = con.prepareStatement(
+                      "delete from Relation where nomForme = ?");
+              prepare.setString(1, object.getNom());
+              prepare = con.prepareStatement(
+                      "delete from Rectangle where NomRc= ?");
+              prepare.setString(1, object.getNom());
+              prepare.executeUpdate();
+              prepare = con.prepareStatement(
+                      "delete from Forme where Nomf = ?");
+              prepare.setString(1, object.getNom());
+              prepare.executeUpdate();
+          } catch (SQLException e) {
+              e.printStackTrace();
+          }
+	
 	}
 
 	@Override

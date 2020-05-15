@@ -1,34 +1,30 @@
 package pglp_9.dessin;
 
-import java.sql.Connection;
-
 
 public class DAOFactoryJDBC {
 	
-    private  Connection con;
-    
     public DAOFactoryJDBC() {
-        con = BDcreation.getConnect();
+        BDcreation.getConnect();
     }
     
 	public  DAO<Cercle> getCercleDAO () {
-		return new JDBCcercleDAO(con) ;
+		return new JDBCcercleDAO() ;
 		}
 	
 	public  DAO<Rectangle> getRectangleDAO () {
-		return new JDBCrectangleDAO (con) ;
+		return new JDBCrectangleDAO () ;
 		}
 	
 	public  DAO<Triangle> getTriangleDAO () {
-		return new JDBCtriangleDAO(con) ;
+		return new JDBCtriangleDAO() ;
 		}
 	
-	public  DAO<Carre> getCarreDAO () {
-		return new JDBCcarreDAO(con);
+	public   DAO<Carre> getCarreDAO () {
+		return new JDBCcarreDAO();
 		}
 	
 	public  DAO<GroupeForme> getGroupeDAO () {
-		return new JDBCgroupeDAO(con);
+		return new JDBCgroupeDAO();
 		}   
 	    
 }
