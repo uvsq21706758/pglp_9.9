@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class JDBCrectangleDAO extends DAO<Rectangle>{
 
@@ -31,14 +32,46 @@ public class JDBCrectangleDAO extends DAO<Rectangle>{
 
 	@Override
 	public Rectangle find(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		Rectangle rectangle= null;
+        try {
+            PreparedStatement prepare = con.prepareStatement(
+                    "SELECT * FROM Rectangle WHERE NomRc =" + id);
+            ResultSet result = prepare.executeQuery();
+            if (result.next()) {
+                Point point = new Point(
+                        result.getInt("point_x"),
+                        result.getInt("point_y"));
+                try {
+                	rectangle = new Rectangle(id,point,result.getInt("largeur"),result.getInt("longeur"));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return rectangle;
 	}
 
 	@Override
 	public Rectangle update(Rectangle object) {
-		// TODO Auto-generated method stub
-		return null;
+	         Rectangle rectangle = this.find(object.getNom());
+	        if (rectangle != null) {
+	            try {
+	                PreparedStatement prepare = con.prepareStatement(
+	                "UPDATE Rectangle SET point_x = "+object.getPoint().getX()+", point_y = "+object.getPoint().getY()+", "
+	                + "largeur = "+object.getLargeur()+", longeur = "+object.getLongueur()+" WHERE NomRc = "+object.getNom());
+	                prepare.executeUpdate();
+	            } catch (SQLException e) {
+	                e.printStackTrace();
+	                return rectangle;
+	            }
+	        } else {
+	            return null;
+	        }
+	        return object;
 	}
 
 	@Override
@@ -46,6 +79,7 @@ public class JDBCrectangleDAO extends DAO<Rectangle>{
 		Statement stmt = con.createStatement();
         ResultSet rs = stmt.executeQuery("select * from Rectangle where NomRc=" + object.getNom());
             if(rs.next()) {
+           	 stmt.executeUpdate("delete from Relation where nomForme ="+ object.getNom());
               stmt.executeUpdate("delete from Rectangle where NomRc="+ object.getNom());
             	rs.close();
             stmt.close();
@@ -54,6 +88,23 @@ public class JDBCrectangleDAO extends DAO<Rectangle>{
             } else {
             	System.out.println("suppression impossible,identifiant introuvable!");
             }
+	}
+
+	@Override
+	public ArrayList<Rectangle> show() {
+		 ArrayList<Rectangle> rectangle = new ArrayList<Rectangle>();
+	        try {
+	            PreparedStatement prepare = con.prepareStatement(
+	                    "SELECT NomRc FROM Rectangle");
+	            ResultSet result = prepare.executeQuery();
+	            while (result.next()) {
+	            	rectangle.add(this.find(result.getString("NomRc")));
+	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	            return new ArrayList<Rectangle>();
+	        }
+	        return rectangle;
 	}
 
 }

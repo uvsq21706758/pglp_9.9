@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class JDBCtriangleDAO extends DAO<Triangle>{
     
@@ -56,6 +57,12 @@ public class JDBCtriangleDAO extends DAO<Triangle>{
             }else {
             	System.out.println("suppression impossible,identifiant introuvable!");
             }
+	}
+
+	@Override
+	public ArrayList<Triangle> show() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

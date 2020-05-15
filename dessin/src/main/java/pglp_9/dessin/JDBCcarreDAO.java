@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class JDBCcarreDAO extends DAO<Carre>{
     
@@ -30,14 +31,46 @@ public class JDBCcarreDAO extends DAO<Carre>{
 
 	@Override
 	public Carre find(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		Carre carre= null;
+        try {
+            PreparedStatement prepare = con.prepareStatement(
+                    "SELECT * FROM Carre WHERE NomCr =" + id);
+            ResultSet result = prepare.executeQuery();
+            if (result.next()) {
+                Point point = new Point(
+                        result.getInt("point_x"),
+                        result.getInt("point_y"));
+                try {
+                	carre = new Carre(id,point,result.getInt("cote"));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return carre;
 	}
 
 	@Override
 	public Carre update(Carre object) {
-		// TODO Auto-generated method stub
-		return null;
+		Carre cercle = this.find(object.getNom());
+	        if (cercle != null) {
+	            try {
+	                PreparedStatement prepare = con.prepareStatement(
+	                "UPDATE Carre SET point_x = "+object.getPoint().getX()+", point_y ="+object.getPoint().getY()+", "
+	                + "cote = "+object.getCote()+" WHERE NomCr = "+object.getNom());
+	                prepare.executeUpdate();
+	            } catch (SQLException e) {
+	                e.printStackTrace();
+	                return cercle;
+	            }
+	        } else {
+	            return null;
+	        }
+	        return object;
 	}
 
 	@Override
@@ -54,6 +87,23 @@ public class JDBCcarreDAO extends DAO<Carre>{
             }else {
             	System.out.println("suppression impossible,identifiant introuvable!");
             }
+	}
+
+	@Override
+	public ArrayList<Carre> show() {
+		 ArrayList<Carre> carre = new ArrayList<Carre>();
+	        try {
+	            PreparedStatement prepare = con.prepareStatement(
+	                    "SELECT NomCr FROM Carre");
+	            ResultSet result = prepare.executeQuery();
+	            while (result.next()) {
+	            	carre.add(this.find(result.getString("NomCr")));
+	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	            return new ArrayList<Carre>();
+	        }
+	        return carre;
 	}
 
 }

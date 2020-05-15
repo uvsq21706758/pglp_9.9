@@ -12,13 +12,13 @@ public class BDcreation {
 	String driver ="org.apache.derby.jdbc.EmbeddedDriver";
 	String dburl = "jdbc:derby:data;create=true";
 	
-	Connection con;
+	static Connection con;
 	
 	public BDcreation() throws SQLException {
 		  con=DriverManager.getConnection(dburl);
 	}
 	
-	public Connection getConnect() {
+	public static Connection getConnect() {
         return con;
     }
 	
@@ -46,7 +46,8 @@ public class BDcreation {
 				 + "Nomcrl varchar(30) primary key,"
 	                + "centre_x int,"
 	                + "centre_y int,"
-	                + "rayon int"
+	                + "rayon int,"
+	                + "foreign key (Nomcrl) references Forme (Nomf)"
 	           + ")";
           Statement stmt = getConnect().createStatement();
              if (!rs.next()) {
@@ -66,7 +67,8 @@ public class BDcreation {
 	                + "point_x int,"
 	                + "point_y int,"
 	                + "largeur int,"
-	                + "longeur int"
+	                + "longeur int,"
+	                + "foreign key (NomRc) references Forme (Nomf)"
 	              + ")";
           Statement stmt = getConnect().createStatement();
              if (!rs.next()) {
@@ -87,7 +89,8 @@ public class BDcreation {
 	                + "point2_x int,"
 	                + "point2_y int,"
 	                + "point3_x int,"
-	                + "point3_y int"
+	                + "point3_y int,"
+	                + "foreign key (NomTr) references Forme (Nomf)"
 	           	+ ")";
           Statement stmt = getConnect().createStatement();
              if (!rs.next()) {
@@ -105,7 +108,8 @@ public class BDcreation {
 		           + "NomCr varchar(30) primary key,"
 	                + "point_x int,"
 	                + "point_y int,"
-	                + "cote int"
+	                + "cote int,"
+	                + "foreign key (NomCr) references Forme (Nomf)"
 		+ ")";
           Statement stmt = getConnect().createStatement();
              if (!rs.next()) {
@@ -120,7 +124,8 @@ public class BDcreation {
     	 DatabaseMetaData dbmd = getConnect().getMetaData();
          ResultSet rs = dbmd.getTables(null, null,"Groupeforme".toUpperCase(), null);
          String createforme="CREATE TABLE Groupeforme ("
-					+ "nomgr VARCHAR(30) PRIMARY KEY"
+					+ "nomgr VARCHAR(30) PRIMARY KEY,"
+					+ "foreign key (nomgr) references Forme (Nomf)"
 					+ ")";
           Statement stmt = getConnect().createStatement();
              if (!rs.next()) {
