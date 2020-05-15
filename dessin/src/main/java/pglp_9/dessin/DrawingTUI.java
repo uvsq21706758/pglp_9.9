@@ -5,4 +5,8 @@ public class DrawingTUI {
 	public void nextCommand() {
 		
 	}
+	
+	public void afficheDraw() {
+		
+	}
 }

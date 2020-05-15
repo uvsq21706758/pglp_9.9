@@ -2,12 +2,17 @@ package pglp_9.dessin;
 
 import java.sql.SQLException;
 
-/**
- * Hello world!
- *
- */
+
 public class DrawingApp 
 {
+	public DrawingApp() {
+		
+	}
+
+	public void run() {
+		
+	}
+	
     public static void main( String[] args ) throws SQLException
     {
     	/*FormeandRelation bd=new FormeandRelation();

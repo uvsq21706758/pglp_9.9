@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class JDBCgroupeDAO extends DAO<GroupeForme>{
      
@@ -57,17 +58,19 @@ public class JDBCgroupeDAO extends DAO<GroupeForme>{
 	                    "INSERT INTO Groupeforme (nomgr) VALUES(?)");
 	            prepare.setString(1, object.getNom());
 	            prepare.executeUpdate();
-	            for (Forme forme : object.getList()) {
-	                if (forme.getClass() == Cercle.class) {
+	            Iterator<Forme> iterator = object.iteratorGroupe();
+	            while (iterator.hasNext()) {
+	          	  Forme forme  = iterator.next();
+	                if (forme instanceof Cercle) {
 	                    DAO<Cercle> cercle = factory.getCercleDAO();
 	                    cercle.create((Cercle) forme);
-	                } else if (forme.getClass() == Carre.class) {
+	                } else if (forme instanceof Carre) {
 	                    DAO<Carre> carre = factory.getCarreDAO();
 	                    carre.create((Carre) forme);
-	                } else if (forme.getClass() == Rectangle.class) {
+	                } else if (forme instanceof Rectangle) {
 	                    DAO<Rectangle> rectangle = factory.getRectangleDAO();
 	                    rectangle.create((Rectangle) forme);
-	                } else if (forme.getClass() == Triangle.class) {
+	                } else if (forme instanceof Triangle) {
 	                    DAO<Triangle> triangle = factory.getTriangleDAO();
 	                    triangle.create((Triangle) forme);
 	                } else {
@@ -111,21 +114,23 @@ public class JDBCgroupeDAO extends DAO<GroupeForme>{
 	        if (!grp.isEmpty()) {
 	            this.deleteRelation(object.getNom());
 	            DAOFactoryJDBC factory = new DAOFactoryJDBC();
-	            for (Forme forme : object.getList()) {
-	                if (forme.getClass() == Cercle.class) {
+	            Iterator<Forme>  iterator = object.iteratorGroupe();
+	            while (iterator.hasNext()) {
+	              	Forme forme = iterator.next();
+	                if (forme instanceof Cercle) {
 	                    DAO<Cercle> cercle = factory.getCercleDAO();
 	                    cercle.update((Cercle) forme);
-	                } else if (forme.getClass() == Carre.class) {
+	                } else if (forme instanceof Carre) {
 	                    DAO<Carre> carre = factory.getCarreDAO();
 	                    carre.update((Carre) forme);
-	                } else if (forme.getClass() == Rectangle.class) {
+	                } else if (forme instanceof Rectangle) {
 	                    DAO<Rectangle> rectangle = factory.getRectangleDAO();
 	                    rectangle.update((Rectangle) forme);
-	                } else if (forme.getClass() == Triangle.class) {
+	                } else if (forme instanceof Triangle) {
 	                    DAO<Triangle> triangle = factory.getTriangleDAO();
 	                    triangle.update((Triangle) forme);
 	                } else {
-	                    this.create((GroupeForme) forme);
+	                    this.update((GroupeForme) forme);
 	                }
 	                this.createRelation( object.getNom(),forme.getNom());
 	            }
