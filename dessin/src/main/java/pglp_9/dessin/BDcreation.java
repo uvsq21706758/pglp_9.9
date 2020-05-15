@@ -38,7 +38,6 @@ public class BDcreation {
             }	
 	}
 	
-	
     public void createtableCercle() throws SQLException {
     	 DatabaseMetaData dbmd = getConnect().getMetaData();
          ResultSet rs = dbmd.getTables(null, null,"Cercle".toUpperCase(), null);

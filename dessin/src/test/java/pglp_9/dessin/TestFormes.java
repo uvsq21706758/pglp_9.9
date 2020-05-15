@@ -40,7 +40,7 @@ public class TestFormes
 	    }
 	    
 	    @Test
-	    public void testConstructeurCercle() throws Exception {
+	    public void testConstructeurCercle() {
 	        Cercle cercle = new Cercle("Cercle", new Point(3,4), 2);
 	        assertEquals(cercle.getNom(), "Cercle");
 	        assertTrue(cercle.getCentre().toString().equals("Point de coordonnees : " + 3 + ", " + 4));
@@ -48,20 +48,20 @@ public class TestFormes
 	    }
 	    
 	    @Test
-	    public void testDeplaceCercle() throws Exception {
+	    public void testDeplaceCercle() {
 	        Cercle cercle = new Cercle("Cercle", new Point(3,4), 2);
 	        cercle.deplace(9, 11);
 	        assertTrue(cercle.getCentre().toString().equals("Point de coordonnees : " + 12 + ", " + 15));
 	    }
 	    
 	    @Test
-	    public void testAfficheCercle() throws Exception {
+	    public void testAfficheCercle() {
 	        Cercle cercle = new Cercle("Cercle", new Point(3,4), 2);
 	        cercle.affiche();
 	    }
 	    
 	    @Test
-	    public void testConstructeurRectangle() throws Exception {
+	    public void testConstructeurRectangle() {
 	        Rectangle rectangle = new Rectangle("Rectangle", new Point(1,1), 3, 2);
 	        assertEquals(rectangle.getNom(), "Rectangle");
 	        assertTrue(rectangle.getPoint().toString().equals("Point de coordonnees : " + 1+ ", " + 1));
@@ -70,13 +70,13 @@ public class TestFormes
 	    }
 	    
 	    @Test
-	    public void testAfficheRectangle() throws Exception {
+	    public void testAfficheRectangle() {
 	        Rectangle rectangle = new Rectangle("Rectangle", new Point(1,1), 3, 2);
 	        rectangle.affiche();
 	    }
 	    
 	    @Test
-	    public void testDeplaceRectangle() throws Exception {
+	    public void testDeplaceRectangle(){
 	        Rectangle rectangle = new Rectangle("Rectangle", new Point(1,1), 3, 2);
 	        rectangle.deplace(11, 3);
 	        assertTrue(rectangle.getPoint().toString().equals("Point de coordonnees : " + 12 + ", " + 4));
@@ -113,7 +113,7 @@ public class TestFormes
 	    }
 	    
 	    @Test
-	    public void testConstructeurCarre() throws Exception {
+	    public void testConstructeurCarre() {
 	        Carre carre = new Carre("carre", new Point(3,2), 2);
 	        assertEquals(carre.getNom(), "carre");
 	        assertEquals(carre.getPoint().toString(),"Point de coordonnees : " + 3 + ", " + 2);
@@ -132,7 +132,7 @@ public class TestFormes
 	    }
 		
 		@Test
-	    public void testAfficheCarre() throws Exception {
+	    public void testAfficheCarre() {
 			Carre carre2 = new Carre("Carre", new Point(3,4), 2);
 			carre2.affiche();
 	    }
@@ -144,7 +144,7 @@ public class TestFormes
 		}
 		
 		@Test
-	    public void testAjoutGroupe() throws Exception {
+	    public void testAjoutGroupe() {
 	        GroupeForme groupe = new GroupeForme("groupe");
 	        Carre carre = new Carre("Carre",  new Point(5,3),2);
 	        groupe.ajoutForme(carre);
@@ -152,7 +152,7 @@ public class TestFormes
 	    }
 		
 	    @Test
-	    public void testSuppGroupe() throws Exception {
+	    public void testSuppGroupe(){
 	        GroupeForme groupe = new GroupeForme("Groupe");
 	        Carre carre = new Carre("Carre",  new Point(5,3),2);
 	        groupe.ajoutForme(carre);
@@ -161,7 +161,7 @@ public class TestFormes
 	    }
 	    
 	    @Test
-	    public void testIterateGroupe() throws Exception {
+	    public void testIterateGroupe() {
 	        GroupeForme groupe = new GroupeForme("Groupe");
 	        Carre carre = new Carre("Carre",  new Point(5,3),2);
 	        groupe.ajoutForme(carre);
@@ -170,7 +170,7 @@ public class TestFormes
 	    }
 	    
 	    @Test
-	    public void testAfficheGroupe() throws Exception {
+	    public void testAfficheGroupe(){
 	        GroupeForme groupe = new GroupeForme("Groupe");
 	        Carre carre = new Carre("Carre",  new Point(5,3),2);
 	        groupe.ajoutForme(carre);
@@ -178,7 +178,7 @@ public class TestFormes
 	    }
 	    
 	    @Test
-	    public void testDeplaceGroupe() throws Exception {
+	    public void testDeplaceGroupe(){
 	        GroupeForme groupe = new GroupeForme("Groupe");
 	        Carre carre = new Carre("Carre",  new Point(5,3),2);
 	        groupe.ajoutForme(carre);
