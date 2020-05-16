@@ -23,6 +23,7 @@ public class DrawingApp
     	c.createtableCercle();
     	c.create(cer);
     	c.droptableCercle();*/
+    	
      
     }
 }

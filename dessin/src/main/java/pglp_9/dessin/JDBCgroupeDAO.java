@@ -47,15 +47,16 @@ public class JDBCgroupeDAO extends DAO<GroupeForme>{
 	 }
 	 
 	@Override
-	public GroupeForme create(GroupeForme object) throws SQLException {
+	public GroupeForme create(GroupeForme object) {
 		DAOFactoryJDBC factory = new DAOFactoryJDBC();
 	        try {
-	            PreparedStatement prepare = con.prepareStatement(
-	                    "INSERT INTO Forme (Nomf) VALUES(?)");
-	            prepare.setString(1, object.getNom());
-	            prepare.executeUpdate();
+	        	PreparedStatement prepare = con.prepareStatement(
+	                    "INSERT INTO Forme (Nomf)"
+	                    + " VALUES(?)");
+	                    prepare.setString(1, object.getNom());
+	                    prepare.executeUpdate();
 	            prepare = con.prepareStatement(
-	                    "INSERT INTO Groupeforme (nomgr) VALUES(?)");
+	                    "insert into Groupeforme (nomgr) VALUES(?)");
 	            prepare.setString(1, object.getNom());
 	            prepare.executeUpdate();
 	            Iterator<Forme> iterator = object.iteratorGroupe();
@@ -64,16 +65,16 @@ public class JDBCgroupeDAO extends DAO<GroupeForme>{
 	                if (forme instanceof Cercle) {
 	                    DAO<Cercle> cercle = factory.getCercleDAO();
 	                    cercle.create((Cercle) forme);
-	                } else if (forme instanceof Carre) {
-	                    DAO<Carre> carre = factory.getCarreDAO();
-	                    carre.create((Carre) forme);
 	                } else if (forme instanceof Rectangle) {
 	                    DAO<Rectangle> rectangle = factory.getRectangleDAO();
 	                    rectangle.create((Rectangle) forme);
 	                } else if (forme instanceof Triangle) {
 	                    DAO<Triangle> triangle = factory.getTriangleDAO();
 	                    triangle.create((Triangle) forme);
-	                } else {
+	                }else if (forme instanceof Carre) {
+	                    DAO<Carre> carre = factory.getCarreDAO();
+	                    carre.create((Carre) forme);
+	                }else {
 	                    this.create((GroupeForme) forme);
 	                }
 	                this.createRelation(object.getNom(), forme.getNom());
@@ -120,15 +121,15 @@ public class JDBCgroupeDAO extends DAO<GroupeForme>{
 	                if (forme instanceof Cercle) {
 	                    DAO<Cercle> cercle = factory.getCercleDAO();
 	                    cercle.update((Cercle) forme);
-	                } else if (forme instanceof Carre) {
-	                    DAO<Carre> carre = factory.getCarreDAO();
-	                    carre.update((Carre) forme);
-	                } else if (forme instanceof Rectangle) {
+	                }else if (forme instanceof Rectangle) {
 	                    DAO<Rectangle> rectangle = factory.getRectangleDAO();
 	                    rectangle.update((Rectangle) forme);
 	                } else if (forme instanceof Triangle) {
 	                    DAO<Triangle> triangle = factory.getTriangleDAO();
 	                    triangle.update((Triangle) forme);
+	                }  else if (forme instanceof Carre) {
+	                    DAO<Carre> carre = factory.getCarreDAO();
+	                    carre.update((Carre) forme);
 	                } else {
 	                    this.update((GroupeForme) forme);
 	                }
@@ -204,14 +205,15 @@ public class JDBCgroupeDAO extends DAO<GroupeForme>{
 	            DAO<Carre> carre = factory.getCarreDAO();
 	            while (result.next()) {
 	                Forme forme = cercle.find(result.getString("nomForme"));
-	                if (forme == null) {
-	                	forme = carre.find(result.getString("nomForme"));
-	                }
+	               
 	                if (forme == null) {
 	                	forme = rectangle.find(result.getString("nomForme"));
 	                }
 	                if (forme == null) {
 	                	forme = triangle.find(result.getString("nomForme"));
+	                } 
+	                if (forme == null) {
+	                	forme = carre.find(result.getString("nomForme"));
 	                }
 	                if (forme == null) {
 	                	forme = this.find(result.getString("nomForme"));
