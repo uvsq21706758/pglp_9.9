@@ -8,14 +8,28 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+/**
+ * classe DAo JDBC triangle
+ *
+ */
 public class JDBCtriangleDAO extends DAO<Triangle>{
     
+	/**
+	 * attribut de connexion
+	 */
     Connection con;
 	
+    /**
+	 * constructeur 
+	 */
 	public JDBCtriangleDAO() {
 		 this.con = FormeandRelation.getConnect();
     }
-	 public void createtableTriangle() throws SQLException {
+	/**
+	  * creation de la table triangle
+	 * @throws SQLException exception sql error
+	 */
+	public void createtableTriangle() throws SQLException {
     	 DatabaseMetaData dbmd = con.getMetaData();
          ResultSet rs = dbmd.getTables(null, null,"Triangle".toUpperCase(), null);
          String createforme="CREATE TABLE Triangle("
@@ -37,7 +51,10 @@ public class JDBCtriangleDAO extends DAO<Triangle>{
              }	
 	}
 	 
-	 public void droptableTriangle() {
+	/**
+	 * supprimer table triangle
+	 */
+	public void droptableTriangle() {
 		 Statement statement = null;
     	 try {
     		 statement = con.createStatement();
@@ -50,6 +67,9 @@ public class JDBCtriangleDAO extends DAO<Triangle>{
          }
 	 }
 	 
+	/**
+	 *insérer dans la table triangle
+	 */
 	@Override
 	public Triangle create(Triangle object) throws SQLException {
 		PreparedStatement prepare = con.prepareStatement(
@@ -72,6 +92,9 @@ public class JDBCtriangleDAO extends DAO<Triangle>{
 		return object;
 	}
 
+	/**
+	 *trouvé un élément 
+	 */
 	@Override
 	public Triangle find(String id) {
 		Triangle triangle= null;
@@ -104,6 +127,9 @@ public class JDBCtriangleDAO extends DAO<Triangle>{
         return triangle;
 	}
 
+	/**
+	 *modifier un tuple dans la table triangle
+	 */
 	@Override
 	public Triangle update(Triangle object) {
 		Triangle triangle = this.find(object.getNom());
@@ -132,6 +158,9 @@ public class JDBCtriangleDAO extends DAO<Triangle>{
 	        return object;
 	}
 
+	/**
+	 *supprimer un tuple du triangle
+	 */
 	@Override
 	public void delete(Triangle object) throws SQLException {
 		   try {
@@ -151,6 +180,9 @@ public class JDBCtriangleDAO extends DAO<Triangle>{
            }
 	}
 
+	/**
+	 *recupere toute la table triangle
+	 */
 	@Override
 	public ArrayList<Triangle> show() {
 		 ArrayList<Triangle> triangle = new ArrayList<Triangle>();

@@ -8,14 +8,29 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+/**
+ *classe DAO JDBC cercle
+ *
+ */
 public class JDBCcercleDAO extends DAO<Cercle>{
+	
+	/**
+	 * attribut de connexion
+	 */
 	Connection con;
 	
+	/**
+	 * constructeur 
+	 */
 	public JDBCcercleDAO() {
        this.con = FormeandRelation.getConnect();
     }
 	
-	  public void createtableCercle() throws SQLException {
+	 /**
+	 * creation de la table cercle
+	 * @throws SQLException exception sql error
+	 */
+	public void createtableCercle() throws SQLException {
 	    	 DatabaseMetaData dbmd = con.getMetaData();
 	         ResultSet rs = dbmd.getTables(null, null,"Cercle".toUpperCase(), null);
 	         String createforme="CREATE TABLE Cercle("
@@ -35,7 +50,10 @@ public class JDBCcercleDAO extends DAO<Cercle>{
 			
 		}
 	  
-	  public void droptableCercle() {
+	 /**
+	  * supprimer table cercle
+	  */
+	public void droptableCercle() {
 		  Statement statement = null;
 	    	 try {
 	    		 statement = con.createStatement();
@@ -48,6 +66,9 @@ public class JDBCcercleDAO extends DAO<Cercle>{
 	         }
 	  }
 
+	/**
+	 *insérer dans la table cercle
+	 */
 	@Override
 	public Cercle create(Cercle object) throws SQLException {
 		
@@ -67,6 +88,9 @@ public class JDBCcercleDAO extends DAO<Cercle>{
 		return object;	
 	}
 
+	/**
+	 *trouvé un élément 
+	 */
 	@Override
 	public Cercle find(String id) {
 		Cercle cercle= null;
@@ -93,6 +117,9 @@ public class JDBCcercleDAO extends DAO<Cercle>{
 	        return cercle;
 	}
 
+	/**
+	 *modifier un tuple dans la table cercle
+	 */
 	@Override
 	public Cercle update(Cercle object) throws SQLException {
          Cercle cercle = this.find(object.getNom());
@@ -116,6 +143,9 @@ public class JDBCcercleDAO extends DAO<Cercle>{
         return object;
 	}
 
+	/**
+	 *supprimer un tuple du cercle
+	 */
 	@Override
 	public void delete(Cercle object) throws SQLException {
             try {
@@ -135,6 +165,9 @@ public class JDBCcercleDAO extends DAO<Cercle>{
             }
 	}
 
+	/**
+	 *recupere toute la table cercle
+	 */
 	@Override
 	public ArrayList<Cercle> show() {
 		 ArrayList<Cercle> cercle = new ArrayList<Cercle>();

@@ -4,14 +4,27 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 
+/**
+ *classe suppression command
+ *
+ */
 public class SuppressionCommand implements Command{
 
-	 ArrayList<Forme> formeList;
+	 /**
+	 * liste des formes
+	 */
+	ArrayList<Forme> formeList;
 	  
+    /**
+     * constructeur
+     */
     public SuppressionCommand() {
 	 this.formeList=new ArrayList<Forme>();
     }
    
+	/**
+	 *execution command
+	 */
 	public void execute() throws SQLException {
 		DAOFactoryJDBC factory = new DAOFactoryJDBC();
 		 for (Forme forme : formeList) {

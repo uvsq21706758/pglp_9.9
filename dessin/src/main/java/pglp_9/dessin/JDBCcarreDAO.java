@@ -8,15 +8,29 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+/**
+ * classe DAo JDBC carré
+ *
+ */
 public class JDBCcarreDAO extends DAO<Carre>{
     
+	/**
+	 * attribut de connexion
+	 */
 	Connection con;
 	
+	/**
+	 * constructeur 
+	 */
 	public JDBCcarreDAO() {
 		 this.con = FormeandRelation.getConnect();
     }
 	
-	 public void createtableCarre() throws SQLException {
+	 /**
+	  * creation de la table carré
+	 * @throws SQLException exception sql error
+	 */
+	public void createtableCarre() throws SQLException {
     	 DatabaseMetaData dbmd = con.getMetaData();
          ResultSet rs = dbmd.getTables(null, null,"Carre".toUpperCase(), null);
          String createforme="CREATE TABLE Carre("
@@ -35,7 +49,10 @@ public class JDBCcarreDAO extends DAO<Carre>{
              }	
 	}
 	 
-	 public void droptableCarre() {
+	 /**
+	 * supprimer table carré
+	 */
+	public void droptableCarre() {
 		 Statement statement = null;
     	 try {
     		 statement = con.createStatement();
@@ -48,6 +65,9 @@ public class JDBCcarreDAO extends DAO<Carre>{
          }
 	 }
 	 
+	/**
+	 *insérer dans la table carré
+	 */
 	@Override
 	public Carre create(Carre object) throws SQLException {
 		PreparedStatement prepare = con.prepareStatement(
@@ -66,6 +86,9 @@ public class JDBCcarreDAO extends DAO<Carre>{
 		return object;	
 	}
 
+	/**
+	 *trouvé un élément 
+	 */
 	@Override
 	public Carre find(String id) {
 		Carre carre= null;
@@ -92,6 +115,9 @@ public class JDBCcarreDAO extends DAO<Carre>{
         return carre;
 	}
 
+	/**
+	 *modifier un tuple dans la table carré
+	 */
 	@Override
 	public Carre update(Carre object) {
 		Carre cercle = this.find(object.getNom());
@@ -115,6 +141,9 @@ public class JDBCcarreDAO extends DAO<Carre>{
 	        return object;
 	}
 
+	/**
+	 *supprimer un tuple du carré
+	 */
 	@Override
 	public void delete(Carre object) throws SQLException {
             try {
@@ -134,6 +163,9 @@ public class JDBCcarreDAO extends DAO<Carre>{
             }
 	}
 
+	/**
+	 *recupere toute la table carré
+	 */
 	@Override
 	public ArrayList<Carre> show() {
 		 ArrayList<Carre> carre = new ArrayList<Carre>();

@@ -9,15 +9,29 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+/**
+ * classe DAo JDBC groupe
+ *
+ */
 public class JDBCgroupeDAO extends DAO<GroupeForme>{
      
+	/**
+	 * attribut de connexion
+	 */
 	Connection con;
 	
+	/**
+	 * constructeur 
+	 */
 	public JDBCgroupeDAO() {
 		 this.con = FormeandRelation.getConnect();
     }
 	
-	 public void createtableGroupe() throws SQLException {
+	/**
+	  * creation de la table groupe
+	 * @throws SQLException exception sql error
+	 */
+	public void createtableGroupe() throws SQLException {
     	 DatabaseMetaData dbmd = con.getMetaData();
          ResultSet rs = dbmd.getTables(null, null,"Groupeforme".toUpperCase(), null);
          String createforme="CREATE TABLE Groupeforme ("
@@ -33,7 +47,10 @@ public class JDBCgroupeDAO extends DAO<GroupeForme>{
              }	
     }
 	 
-	 public void droptableGroupe() {
+	/**
+	 * supprimer table groupe
+	 */
+	public void droptableGroupe() {
 		 Statement statement = null;
     	 try {
     		 statement = con.createStatement();
@@ -46,6 +63,9 @@ public class JDBCgroupeDAO extends DAO<GroupeForme>{
          }
 	 }
 	 
+	/**
+	 *insérer dans la table groupe
+	 */
 	@Override
 	public GroupeForme create(GroupeForme object) {
 		DAOFactoryJDBC factory = new DAOFactoryJDBC();
@@ -59,7 +79,7 @@ public class JDBCgroupeDAO extends DAO<GroupeForme>{
 	                    "insert into Groupeforme (nomgr) VALUES(?)");
 	            prepare.setString(1, object.getNom());
 	            prepare.executeUpdate();
-	            Iterator<Forme> iterator = object.iteratorGroupe();
+	            Iterator<Forme> iterator = object.iterator();
 	            while (iterator.hasNext()) {
 	          	  Forme forme  = iterator.next();
 	                if (forme instanceof Cercle) {
@@ -87,8 +107,11 @@ public class JDBCgroupeDAO extends DAO<GroupeForme>{
 	        return object;
 	}
 
+	/**
+	 *trouvé un élément 
+	 */
 	@Override
-	public GroupeForme find(String id) throws SQLException {
+	public GroupeForme find(String id) {
 		GroupeForme formegr = null;
         try {
             PreparedStatement prepare = con.prepareStatement(
@@ -109,13 +132,16 @@ public class JDBCgroupeDAO extends DAO<GroupeForme>{
         return formegr;
 	}
 
+	/**
+	 *modifier un tuple dans la table groupe
+	 */
 	@Override
 	public GroupeForme update(GroupeForme object) throws SQLException {
 		  ArrayList<Forme> grp = this.findRelation(object.getNom());
 	        if (!grp.isEmpty()) {
 	            this.deleteRelation(object.getNom());
 	            DAOFactoryJDBC factory = new DAOFactoryJDBC();
-	            Iterator<Forme>  iterator = object.iteratorGroupe();
+	            Iterator<Forme>  iterator = object.iterator();
 	            while (iterator.hasNext()) {
 	              	Forme forme = iterator.next();
 	                if (forme instanceof Cercle) {
@@ -142,6 +168,9 @@ public class JDBCgroupeDAO extends DAO<GroupeForme>{
 	        return object;
 	}
 
+	/**
+	 *supprimer un tuple du groupe
+	 */
 	@Override
 	public void delete(GroupeForme object) throws SQLException {
             try {
@@ -162,6 +191,9 @@ public class JDBCgroupeDAO extends DAO<GroupeForme>{
             }
 	}
 
+	/**
+	 *recupere toute la table groupe
+	 */
 	@Override
 	public ArrayList<GroupeForme> show() {
 		ArrayList<GroupeForme> groupe = new ArrayList<GroupeForme>();
@@ -178,6 +210,11 @@ public class JDBCgroupeDAO extends DAO<GroupeForme>{
         }
         return groupe;
 	}
+	/**
+	 * insérer dans table relation
+	 * @param nomGroupe nom du groupe contenant les formes
+	 * @param nomForme nom du forme insérer au groupe
+	 */
 	public void createRelation(String nomGroupe,String nomForme) {
         try {
             PreparedStatement prepare = con.prepareStatement(
@@ -191,7 +228,12 @@ public class JDBCgroupeDAO extends DAO<GroupeForme>{
         }
     }
 	
-      public ArrayList<Forme> findRelation(final String id) {
+      /**
+       * trouvé les relations d'un groupe avec formes 
+     * @param id id du groupe
+     * @return liste des composants d'un groupe
+     */
+    public ArrayList<Forme> findRelation(final String id) {
 	        ArrayList<Forme> rela = new ArrayList<Forme>();
 	        DAOFactoryJDBC factory = new DAOFactoryJDBC();
 	        try {
@@ -228,7 +270,12 @@ public class JDBCgroupeDAO extends DAO<GroupeForme>{
 	        }
 	        return rela;
 	    }
-      public void deleteRelation(final String id) {
+    
+      /**
+       * supprimer les relations d'un groupe avec formes 
+     * @param id id du groupe
+     */
+    public void deleteRelation(final String id) {
           final int un = 1;
           try {
               PreparedStatement prepare = con.prepareStatement(

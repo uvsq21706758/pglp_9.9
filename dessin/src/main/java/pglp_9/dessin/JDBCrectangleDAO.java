@@ -8,15 +8,29 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+/**
+ * classe DAo JDBC rectangle
+ *
+ */
 public class JDBCrectangleDAO extends DAO<Rectangle>{
 
+	/**
+	 * attribut de connexion
+	 */
 	Connection con;
 	
+	/**
+	 * constructeur 
+	 */
 	public JDBCrectangleDAO() {
 		 this.con = FormeandRelation.getConnect();
     }
 
-	 public void createtableRectangle() throws SQLException {
+	/**
+	  * creation de la table rectangle
+	 * @throws SQLException exception sql error
+	 */
+	public void createtableRectangle() throws SQLException {
     	 DatabaseMetaData dbmd = con.getMetaData();
          ResultSet rs = dbmd.getTables(null, null,"Rectangle".toUpperCase(), null);
          String createforme="CREATE TABLE Rectangle("
@@ -36,7 +50,10 @@ public class JDBCrectangleDAO extends DAO<Rectangle>{
              }	
 	}
 	 
-	 public void droptableRectangle() {
+	/**
+	 * supprimer table rectangle
+	 */
+	public void droptableRectangle() {
 		 Statement statement = null;
     	 try {
     		 statement = con.createStatement();
@@ -49,6 +66,9 @@ public class JDBCrectangleDAO extends DAO<Rectangle>{
          }
 	 }
 	 
+	/**
+	 *insérer dans la table rectangle
+	 */
 	@Override
 	public Rectangle create(Rectangle object) throws SQLException {
 		PreparedStatement prepare = con.prepareStatement(
@@ -69,6 +89,9 @@ public class JDBCrectangleDAO extends DAO<Rectangle>{
 		return object;	
 	}
 
+	/**
+	 *trouvé un élément 
+	 */
 	@Override
 	public Rectangle find(String id) {
 		Rectangle rectangle= null;
@@ -95,6 +118,9 @@ public class JDBCrectangleDAO extends DAO<Rectangle>{
         return rectangle;
 	}
 
+	/**
+	 *modifier un tuple dans la table rectangle
+	 */
 	@Override
 	public Rectangle update(Rectangle object) {
 	         Rectangle rectangle = this.find(object.getNom());
@@ -120,6 +146,9 @@ public class JDBCrectangleDAO extends DAO<Rectangle>{
 	        return object;
 	}
 
+	/**
+	 *supprimer un tuple du rectangle
+	 */
 	@Override
 	public void delete(Rectangle object) throws SQLException {
 		  try {
@@ -140,6 +169,9 @@ public class JDBCrectangleDAO extends DAO<Rectangle>{
 	
 	}
 
+	/**
+	 *recupere toute la table rectangle
+	 */
 	@Override
 	public ArrayList<Rectangle> show() {
 		 ArrayList<Rectangle> rectangle = new ArrayList<Rectangle>();

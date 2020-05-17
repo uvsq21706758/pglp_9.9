@@ -7,21 +7,46 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ * classe contient creation et suppression des tables forme et relation
+ *
+ */
 public class FormeandRelation {
 	
+	/**
+	 * attribut driver
+	 */
 	String driver ="org.apache.derby.jdbc.EmbeddedDriver";
+	
+	/**
+	 * attribut dburl
+	 */
 	String dburl = "jdbc:derby:data;create=true";
 	
-	 static Connection con;
+	/**
+	 * attribut de connexion
+	 */
+	static Connection con;
 	
+	/**
+	 * constructeur
+	 * @throws SQLException sql error exception
+	 */
 	public FormeandRelation() throws SQLException {
 		  con=DriverManager.getConnection(dburl);
 	}
 	
+	/**
+	 * @return la connexion de la base de donnée
+	 */
 	public static  Connection getConnect() {
         return con;
     }
 	
+	/**
+	  * creation de la table forme
+	 * @throws SQLException exception sql error
+	 */
 	public void createtableForme() throws SQLException {
  
         DatabaseMetaData dbmd = getConnect().getMetaData();
@@ -38,6 +63,10 @@ public class FormeandRelation {
             }	
 	}
     
+	/**
+	  * creation de la table relation
+	 * @throws SQLException exception sql error
+	 */
     public void createrelation() throws SQLException {
     	DatabaseMetaData dbmd = getConnect().getMetaData();
         ResultSet rs = dbmd.getTables(null, null,"Relation".toUpperCase(), null);
@@ -59,6 +88,9 @@ public class FormeandRelation {
             }	
     }
     
+    /**
+	 * supprimer table relation
+	 */
     public void dropRelation() {
     	Statement statement = null;
     	 try {
@@ -72,6 +104,9 @@ public class FormeandRelation {
          }
     }
 	
+    /**
+	 * supprimer table forme
+	 */
     public void dropForme() {
     	Statement statement = null;
     	 try {

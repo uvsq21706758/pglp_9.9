@@ -2,13 +2,27 @@ package pglp_9.dessin;
 
 import java.sql.SQLException;
 
+/**
+ *classe creation command
+ *
+ */
 public class CreationCommand implements Command{
 	
+		/**
+		 * attribut forme
+		 */
 		Forme forme;
 		
-     public CreationCommand(Forme forme) {
+     /**
+      * constructeur
+     * @param forme la forme a créer
+     */
+    public CreationCommand(Forme forme) {
     	 this.forme=forme;
      }
+	/**
+	 *execution command
+	 */
 	public void execute() throws SQLException {
 	
 		DAOFactoryJDBC factory = new DAOFactoryJDBC();
