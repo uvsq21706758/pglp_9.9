@@ -15,7 +15,7 @@ public class CreationCommand implements Command{
 		
      /**
       * constructeur
-     * @param forme la forme a crÃ©er
+     * @param forme la forme a créer
      */
     public CreationCommand(Forme forme) {
     	 this.forme=forme;
@@ -45,7 +45,7 @@ public class CreationCommand implements Command{
              groupe.create((GroupeForme) forme);
         }
        
-            System.out.println("La forme est crÃ©Ã©e ");
+            System.out.println("La forme est créée ");
        
 	}
 

@@ -1,6 +1,6 @@
 package pglp_9.dessin;
 
-import java.sql.SQLException;
+
 import java.util.ArrayList;
 
 /**
@@ -16,12 +16,12 @@ public abstract class DAO<T> {
 	 * @return creation
 	 * @throws SQLException exception
 	 */
-	public abstract T create(T object) throws SQLException;
+	public abstract T create(T object);
    
     /**
      * chercher un objet
      * @param id l'id de l'objet
-     * @return l'objet recherchÃ©
+     * @return l'objet recherché
      */
     public abstract T find(String id);
        
@@ -31,18 +31,19 @@ public abstract class DAO<T> {
      * @return
      * @throws SQLException
      */
-    public abstract T update(T object) throws SQLException;
+    public abstract T update(T object);
    
     /**
      * supprimer
      * @param object
      * @throws SQLException
      */
-    public abstract void delete(T object) throws SQLException;
+    public abstract void delete(T object);
     
     /**
-     * @return les Ã©lements
+     * @return les élements
      */
     public abstract ArrayList<T> show();
   
 }
+

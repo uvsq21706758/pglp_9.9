@@ -3,7 +3,6 @@ package pglp_9.dessin;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-
 /**
  *classe suppression command
  *
@@ -18,8 +17,8 @@ public class SuppressionCommand implements Command{
     /**
      * constructeur
      */
-    public SuppressionCommand() {
-	 this.formeList=new ArrayList<Forme>();
+    public SuppressionCommand(ArrayList<Forme> fl) {
+	 this.formeList=fl;
     }
    
 	/**
@@ -46,9 +45,10 @@ public class SuppressionCommand implements Command{
              groupe.delete((GroupeForme) forme);
         }
 		 }
-            System.out.println("La forme est supprimÃ©e");
+            System.out.println("La forme est supprimée");
        
 		 
 	}
 
 }
+

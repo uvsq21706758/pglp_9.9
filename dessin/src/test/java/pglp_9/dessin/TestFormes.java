@@ -165,7 +165,7 @@ public class TestFormes
 	        GroupeForme groupe = new GroupeForme("Groupe");
 	        Carre carre = new Carre("Carre",  new Point(5,3),2);
 	        groupe.ajoutForme(carre);
-	        Iterator<Forme> itf = groupe.iteratorGroupe();
+	        Iterator<Forme> itf = groupe.iterator();
 	        assertTrue(itf.hasNext() && itf.next() == carre && itf.hasNext() == false);
 	    }
 	    
